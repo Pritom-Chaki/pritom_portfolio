@@ -36,10 +36,10 @@ class MainDashBoardState extends State<MainDashBoard> {
 
   final screensList = const <Widget>[
     HomePage(),
-    AboutMe(),
-    MyServices(),
-    MyPortfolio(),
-    ContactUs(),
+    // AboutMe(),
+    // MyServices(),
+    // MyPortfolio(),
+     ContactUs(),
     FooterClass(),
   ];
 

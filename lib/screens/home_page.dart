@@ -1,7 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:pritom_portfolio/utils/app_assets.dart';
 import 'package:pritom_portfolio/utils/app_buttons.dart';
 import 'package:pritom_portfolio/utils/app_colors.dart';
 import 'package:pritom_portfolio/utils/app_text_styles.dart';
