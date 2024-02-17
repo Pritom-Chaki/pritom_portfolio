@@ -56,7 +56,7 @@ class _MyAppBarState extends State<MyAppBar> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  'Portfolio',
+                  'Pritom',
                   style: TextStyle(color: AppColors.themeColor),
                 ),
                 const Spacer(),
@@ -78,7 +78,7 @@ class _MyAppBarState extends State<MyAppBar> {
                           onTap: () {
                             scrollTo(index: e.key);
                           },
-                          child: Text(e.value),
+                          child: Text(e.value, style: const TextStyle(color: Colors.white),),
                         ),
                       )
                       .toList(),
@@ -89,7 +89,7 @@ class _MyAppBarState extends State<MyAppBar> {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Text('Portfolio'),
+                const Text('Pritom'),
                 const Spacer(),
                 SizedBox(
                   height: 30,
@@ -132,7 +132,7 @@ class _MyAppBarState extends State<MyAppBar> {
   AnimatedContainer buildNavBarAnimatedContainer(int index, bool hover) {
     return AnimatedContainer(
       alignment: Alignment.center,
-      width: hover ? 80 : 75,
+      width: hover ? 90 : 80,
       duration: const Duration(milliseconds: 200),
       transform: hover ? onMenuHover : null,
       child: Text(

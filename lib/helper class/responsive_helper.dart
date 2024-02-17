@@ -8,13 +8,13 @@ class ResponsiveHelper extends StatelessWidget {
   final double paddingWidth;
   final Color bgColor;
   const ResponsiveHelper({
-    Key? key,
+    super.key,
     required this.mobile,
     required this.tablet,
     required this.desktop,
     required this.paddingWidth,
     required this.bgColor,
-  }) : super(key: key);
+  });
 
 
   // screen sizes

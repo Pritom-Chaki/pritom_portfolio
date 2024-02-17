@@ -3,7 +3,11 @@ import 'app_assets.dart';
 
 class AppConstant {
   static String cvLink = 'https://www.pritom.me';
-
+  static String emailValidatorPattern =
+      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+      r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+      r"{0,253}[a-zA-Z0-9])?)*$";
+  static String fieldRequire = "Field is Required";
   static List<SocialAccountModel> socialAccounts = [
     SocialAccountModel(
       id: 1,

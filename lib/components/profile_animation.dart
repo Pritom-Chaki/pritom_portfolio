@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../utils/app_assets.dart';
 
 class ProfileAnimation extends StatefulWidget {
+  // ignore: use_super_parameters
   const ProfileAnimation({Key? key}) : super(key: key);
 
   @override
@@ -38,7 +39,7 @@ class ProfileAnimationState extends State<ProfileAnimation>
       child: Image.asset(
         AppAssets.profile1,
         width: 300,
-        height: 340,
+        height: 300,
         fit: BoxFit.fill,
       ),
     );

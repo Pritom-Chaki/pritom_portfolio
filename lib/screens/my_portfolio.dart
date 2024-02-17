@@ -25,7 +25,7 @@ class _MyPortfolioState extends State<MyPortfolio> {
     AppAssets.work2,
   ];
 
-  var hoveredIndex;
+  int ? hoveredIndex;
 
   @override
   Widget build(BuildContext context) {
