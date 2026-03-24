@@ -1,0 +1,171 @@
+---
+title: "bangla_number_to_words: Convert Numbers and Currency to Bangla Words in Dart"
+slug: "bangla-number-to-words-dart-package-guide"
+description: "A complete guide to using the bangla_number_to_words Dart package for converting numbers and monetary amounts into Bangla words using the Bangladeshi numbering system. Includes examples for invoices, receipts, and financial apps."
+date: "2025-03-15"
+tags: ["Dart", "Flutter", "Bangla", "Fintech", "Open Source"]
+image: "/blog/bangla-number-to-words.png"
+---
+
+If you have ever needed to print an invoice amount in words — like "এক হাজার দুইশ পঞ্চাশ টাকা" — you know how tricky Bangla number-to-word conversion can be. The Bangladeshi numbering system uses শত (hundred), হাজার (thousand), লক্ষ (lakh), and কোটি (crore) instead of the Western million/billion system. The **bangla_number_to_words** package handles all of this with a clean, pure Dart API.
+
+## Why This Package?
+
+Financial applications, invoices, receipts, and cheques in Bangladesh require amounts written in Bangla words. The Bangladeshi numbering system groups digits differently than the international system:
+
+| Value | International | Bangladeshi |
+|-------|--------------|-------------|
+| 100 | Hundred | শত (Shoto) |
+| 1,000 | Thousand | হাজার (Hajar) |
+| 100,000 | Hundred thousand | লক্ষ (Lakh) |
+| 10,000,000 | Ten million | কোটি (Koti) |
+
+Building this logic from scratch means handling dozens of Bangla word mappings, special grouping rules, and edge cases. This package does it all.
+
+## Installation
+
+```yaml
+dependencies:
+  bangla_number_to_words: ^1.0.0
+```
+
+This is a **pure Dart** package — no Flutter dependency required. It works in Flutter apps, server-side Dart, and CLI tools.
+
+## Converting Numbers to Bangla Words
+
+The `convertNumber()` method transforms any number into its Bangla word representation:
+
+```dart
+import 'package:bangla_number_to_words/bangla_number_to_words.dart';
+
+BanglaNumberToWords.convertNumber(0);
+// "শূন্য"
+
+BanglaNumberToWords.convertNumber(123);
+// "একশ তেইশ"
+
+BanglaNumberToWords.convertNumber(1234);
+// "এক হাজার দুইশ চৌত্রিশ"
+
+BanglaNumberToWords.convertNumber(12345678);
+// "এক কোটি তেইশ লক্ষ পঁয়তাল্লিশ হাজার ছয়শ আটাত্তর"
+```
+
+Negative numbers are handled automatically with a "মাইনাস" prefix:
+
+```dart
+BanglaNumberToWords.convertNumber(-500);
+// "মাইনাস পাঁচশ"
+```
+
+## Converting Money to Bangla Words
+
+This is where the package really shines. The `convertMoney()` method adds currency labels and handles decimal amounts as পয়সা (paisa):
+
+```dart
+// Basic BDT conversion
+BanglaNumberToWords.convertMoney(1250);
+// "এক হাজার দুইশ পঞ্চাশ টাকা"
+
+// With paisa (decimal)
+BanglaNumberToWords.convertMoney(125.50);
+// "একশ পঁচিশ টাকা পঞ্চাশ পয়সা"
+
+// With "মাত্র" (only) suffix — common on cheques
+BanglaNumberToWords.convertMoney(1250, addOnly: true);
+// "এক হাজার দুইশ পঞ্চাশ টাকা মাত্র"
+```
+
+### Multi-Currency Support
+
+The package supports five currencies out of the box:
+
+```dart
+BanglaNumberToWords.convertMoney(125, currency: Currency.bdt);
+// "একশ পঁচিশ টাকা"
+
+BanglaNumberToWords.convertMoney(125, currency: Currency.usd);
+// "একশ পঁচিশ ডলার"
+
+BanglaNumberToWords.convertMoney(125, currency: Currency.eur);
+// "একশ পঁচিশ ইউরো"
+
+BanglaNumberToWords.convertMoney(125, currency: Currency.gbp);
+// "একশ পঁচিশ পাউন্ড"
+
+BanglaNumberToWords.convertMoney(125, currency: Currency.inr);
+// "একশ পঁচিশ রুপি"
+```
+
+## Short Number Formatting
+
+For dashboards and analytics, use `shortFormat()` to display large numbers in a compact Bangla format:
+
+```dart
+BanglaNumberToWords.shortFormat(1200);
+// "১.২ হাজার"
+
+BanglaNumberToWords.shortFormat(150000);
+// "১.৫ লক্ষ"
+
+BanglaNumberToWords.shortFormat(12000000);
+// "১.২ কোটি"
+```
+
+## Digit Conversion Utilities
+
+The package also includes simple digit conversion helpers:
+
+```dart
+BanglaNumberToWords.toBanglaDigits('12345');
+// "১২৩৪৫"
+
+BanglaNumberToWords.toEnglishDigits('১২৩৪৫');
+// "12345"
+```
+
+## Real-World Example: Invoice Widget
+
+Here is how you might use this in a Flutter invoice screen:
+
+```dart
+class InvoiceAmountWidget extends StatelessWidget {
+  final double amount;
+
+  const InvoiceAmountWidget({required this.amount});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '৳ ${amount.toStringAsFixed(2)}',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 4),
+        Text(
+          BanglaNumberToWords.convertMoney(amount, addOnly: true),
+          style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+        ),
+      ],
+    );
+  }
+}
+```
+
+## API Summary
+
+| Method | Description |
+|--------|-------------|
+| `convertNumber(num)` | Number to Bangla words |
+| `convertMoney(num, {currency, addOnly})` | Amount to Bangla words with currency |
+| `shortFormat(num)` | Compact Bangla format (১.২ লক্ষ) |
+| `toBanglaDigits(String)` | English digits to Bangla digits |
+| `toEnglishDigits(String)` | Bangla digits to English digits |
+
+## Summary
+
+The **bangla_number_to_words** package is essential for any Dart or Flutter application that needs to display amounts in Bangla words — invoices, cheques, receipts, financial reports, or analytics dashboards. It is pure Dart, has zero dependencies, and covers the full Bangladeshi numbering system.
+
+Install it from [pub.dev](https://pub.dev/packages/bangla_number_to_words) or check the source on [GitHub](https://github.com/Pritom-Chaki/bangla_number_to_words).

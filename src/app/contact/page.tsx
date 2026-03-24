@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { siteConfig } from "@/lib/constants";
 import { CopyEmailButton } from "@/components/copy-email-button";
+import { ContactForm } from "@/components/contact-form";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -76,7 +78,7 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24">
+    <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
       <div className="animate-fade-in">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
           Get in Touch
@@ -87,47 +89,45 @@ export default function ContactPage() {
         </p>
       </div>
 
-      <div className="mt-10 animate-fade-in-delay-1">
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold mb-3">Quick Copy</h2>
-          <CopyEmailButton />
+      <div className="mt-10 grid gap-10 lg:grid-cols-2 animate-fade-in-delay-1">
+        {/* Left: Social Links */}
+        <div>
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold mb-3">Quick Copy</h2>
+            <CopyEmailButton />
+          </div>
+
+          <div className="grid gap-4 grid-cols-2">
+            {contactMethods.map((method) => (
+              <a
+                key={method.name}
+                href={method.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card group flex items-start gap-4 p-5"
+              >
+                <div style={{ color: "var(--muted-fg)" }} className="group-hover:!text-[var(--primary)] transition-colors">
+                  {method.icon}
+                </div>
+                <div>
+                  <h3 className="font-semibold">{method.name}</h3>
+                  <p className="mt-1 text-sm" style={{ color: "var(--muted-fg)" }}>{method.value}</p>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          {contactMethods.map((method) => (
-            <a
-              key={method.name}
-              href={method.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="card group flex items-start gap-4 p-5"
-            >
-              <div style={{ color: "var(--muted-fg)" }} className="group-hover:!text-[var(--primary)] transition-colors">
-                {method.icon}
-              </div>
-              <div>
-                <h3 className="font-semibold">{method.name}</h3>
-                <p className="mt-1 text-sm" style={{ color: "var(--muted-fg)" }}>{method.value}</p>
-              </div>
-            </a>
-          ))}
+        {/* Right: Contact Form */}
+        <div className="card p-8 h-fit">
+          <h2 className="text-xl font-semibold">Send me a Message</h2>
+          <p className="mt-2 mb-6 text-sm" style={{ color: "var(--muted-fg)" }}>
+            Fill out the form below and I&apos;ll get back to you as soon as possible.
+          </p>
+          <Suspense fallback={null}>
+            <ContactForm />
+          </Suspense>
         </div>
-      </div>
-
-      <div className="cta-section mt-16 p-8 text-center animate-fade-in-delay-2">
-        <h2 className="text-xl font-semibold">Let&apos;s Work Together</h2>
-        <p className="mt-3" style={{ color: "var(--muted-fg)" }}>
-          I&apos;m open to freelance projects, collaborations, and interesting
-          opportunities. Whether it&apos;s a mobile app, web application, or
-          open-source project, I&apos;d love to hear about it.
-        </p>
-        <a href={`mailto:${siteConfig.links.email}`} className="btn-primary mt-6">
-          Send an Email
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-          </svg>
-        </a>
       </div>
     </div>
   );

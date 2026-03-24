@@ -1,0 +1,149 @@
+---
+title: "bangla_converter: Convert Bangla and English Numbers & Dates in Flutter"
+slug: "bangla-converter-flutter-package-guide"
+description: "Learn how to use the bangla_converter Flutter package to seamlessly convert between Bangla and English numerals and dates. Complete guide with installation, API reference, and practical examples."
+date: "2025-03-20"
+tags: ["Flutter", "Dart", "Bangla", "Localization", "Open Source"]
+image: "/blog/bangla-converter.png"
+---
+
+Building a Flutter app for Bangladeshi users? You will need to display numbers and dates in Bangla. The **bangla_converter** package makes this effortless with a simple, static API for bidirectional conversion between Bangla and English numerals and dates.
+
+## Why bangla_converter?
+
+When developing apps for the Bangladeshi market, localization is critical. Users expect to see numbers like **০১৭৩৩** instead of **01733**, and dates in the Bangla calendar format. Manually handling these conversions is error-prone and tedious. This package solves that with a clean, well-tested API.
+
+## Installation
+
+Add the package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  bangla_converter: ^2.0.0
+```
+
+Then run:
+
+```bash
+flutter pub get
+```
+
+## Converting Numbers
+
+### English to Bangla
+
+Use `BanglaConverter.engToBan()` to convert English digits to Bangla. It works with any data type — strings, integers, doubles — and preserves non-numeric characters.
+
+```dart
+import 'package:bangla_converter/bangla_converter.dart';
+
+// Convert a phone number
+String banglaPhone = BanglaConverter.engToBan("01733-452678");
+// Output: "০১৭৩৩-৪৫২৬৭৮"
+
+// Convert an integer
+String banglaNumber = BanglaConverter.engToBan(12345);
+// Output: "১২৩৪৫"
+
+// Non-numeric characters are preserved
+String mixed = BanglaConverter.engToBan("Price: 500 BDT");
+// Output: "Price: ৫০০ BDT"
+```
+
+### Bangla to English
+
+The reverse conversion works the same way with `BanglaConverter.banToEng()`:
+
+```dart
+String englishPhone = BanglaConverter.banToEng("০১৭৩৩-৪৫২৬৭৮");
+// Output: "01733-452678"
+
+String englishNumber = BanglaConverter.banToEng("১২৩৪৫");
+// Output: "12345"
+```
+
+## Converting Dates
+
+### English Date to Bangla Date
+
+The `banglaDate()` method converts English (Gregorian) dates to the Bangla calendar. You can use it in three ways:
+
+```dart
+// Get today's date in Bangla
+var today = BanglaConverter.banglaDate(isToday: true);
+print(today?.date);    // "২৪শে" (day with Bangla suffix)
+print(today?.month);   // "চৈত্র" (Bangla month name)
+print(today?.year);    // "১৪৩১" (Bangla year in Bangla digits)
+print(today?.weekDay); // "সোমবার" (Bangla weekday)
+
+// Convert a specific DateTime
+var specific = BanglaConverter.banglaDate(
+  englishDate: DateTime(2025, 1, 15),
+);
+
+// Convert from individual components
+var custom = BanglaConverter.banglaDate(
+  day: 15,
+  month: 1,
+  year: 2025,
+);
+```
+
+The returned `BanglaDateReturn` object includes:
+
+- `date` — Day number with the correct Bangla suffix (লা, রা, or শে)
+- `month` — Bangla month name (বৈশাখ, জ্যৈষ্ঠ, etc.)
+- `monthDigit` — Month number as a string
+- `year` — Bangla year in Bangla digits
+- `weekDay` — Bangla weekday name
+- `yearDescription` — Always "বঙ্গাব্দ"
+
+### Bangla Date to English Date
+
+Convert back to a Gregorian `DateTime` using `englishDate()`:
+
+```dart
+DateTime englishDate = BanglaConverter.englishDate(
+  banglaDay: 1,
+  banglaMonth: 1,
+  banglaYear: 1432,
+);
+// Returns: DateTime object for the corresponding English date
+```
+
+## Real-World Use Case
+
+Here is a practical example showing Bangla dates in a Flutter widget:
+
+```dart
+class BanglaDateWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final banglaDate = BanglaConverter.banglaDate(isToday: true);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '${banglaDate?.date} ${banglaDate?.month}, ${banglaDate?.year} ${banglaDate?.yearDescription}',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          banglaDate?.weekDay ?? '',
+          style: TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+}
+```
+
+## Platform Support
+
+The package works across all Flutter platforms: Android, iOS, Linux, macOS, Web, and Windows.
+
+## Summary
+
+The **bangla_converter** package provides a straightforward API for Bangla-English number and date conversion. Whether you are building a banking app, an e-commerce platform, or any app targeting Bangladeshi users, this package handles the localization heavy lifting so you can focus on your core features.
+
+Check it out on [pub.dev](https://pub.dev/packages/bangla_converter) or explore the source on [GitHub](https://github.com/Pritom-Chaki/bangla_converter).

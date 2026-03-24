@@ -11,7 +11,7 @@ export const siteConfig = {
     twitter: "https://www.twitter.com/PritomChaki",
     facebook: "https://www.facebook.com/pritom.chaki.77",
     instagram: "https://www.instagram.com/pritom_chaki",
-    email: "pritom.chaki@gmail.com",
+    email: "hello.pritom.chaki@gmail.com",
   },
   author: {
     name: "Pritom Chaki",

@@ -1,0 +1,223 @@
+---
+title: "bd_money_formatter: Format Numbers in Bangladesh Money Style with Dart"
+slug: "bd-money-formatter-dart-package-guide"
+description: "Learn how to use the bd_money_formatter Dart package to format numbers in Bangladesh's unique monetary grouping system. Complete guide with installation, extension methods, and practical Flutter examples."
+date: "2025-03-10"
+tags: ["Dart", "Flutter", "Bangladesh", "Fintech", "Open Source"]
+image: "/blog/bd-money-formatter.png"
+---
+
+Bangladesh uses a unique number grouping system for currency that is different from the international standard. Instead of **1,234,567**, Bangladeshi format writes it as **12,34,567** — the rightmost group has 3 digits, and every subsequent group has 2 digits. The **bd_money_formatter** package handles this formatting correctly with a simple API and convenient extension methods.
+
+## The Bangladesh Money Format
+
+Most countries use groups of three digits separated by commas:
+
+```
+International: 1,234,567
+```
+
+Bangladesh follows the South Asian numbering system where only the first group (from the right) has three digits, and all subsequent groups have two:
+
+```
+Bangladesh: 12,34,567
+```
+
+Here is how different values look in BD format:
+
+| Number | International | Bangladesh |
+|--------|--------------|------------|
+| 1000 | 1,000 | 1,000 |
+| 50000 | 50,000 | 50,000 |
+| 100000 | 100,000 | 1,00,000 |
+| 1234567 | 1,234,567 | 12,34,567 |
+| 2554413646 | 2,554,413,646 | 2,55,44,13,646 |
+
+## Installation
+
+```yaml
+dependencies:
+  bd_money_formatter: ^2.0.0
+```
+
+This is a **pure Dart** package with zero dependencies. It works with Flutter, server-side Dart, and CLI applications.
+
+## Quick Start with Extension Methods
+
+The easiest way to use the package is through the extension methods on `num`:
+
+```dart
+import 'package:bd_money_formatter/bd_money_formatter.dart';
+
+// Format without currency
+1234567.toBDMoney();
+// "12,34,567"
+
+// Format with currency symbol (default: ৳)
+1234567.toBDMoneyWithCurrency();
+// "৳ 12,34,567"
+
+// Custom currency symbol
+1234567.toBDMoneyWithCurrency(currencySymbol: 'BDT');
+// "BDT 12,34,567"
+```
+
+## Handling Different Number Types
+
+The package works with both integers and doubles:
+
+```dart
+// Integer
+1234567.toBDMoney();
+// "12,34,567"
+
+// Double with decimals
+97865466.352.toBDMoney();
+// "9,78,65,466.352"
+
+// Negative numbers
+(-456978.32).toBDMoney();
+// "-4,56,978.32"
+```
+
+## Class-Based API
+
+For more control, use the `BDMoneyFormatter` class directly:
+
+```dart
+final formatter = BDMoneyFormatter(2554413646);
+
+// Formatted amount
+print(formatter.result.amount);
+// "2,55,44,13,646"
+
+// With currency symbol
+print(formatter.result.amountWithCurrency);
+// "৳ 2,55,44,13,646"
+
+// Original value
+print(formatter.result.originalValue);
+// 2554413646
+```
+
+You can also pass a custom currency symbol to the constructor:
+
+```dart
+final formatter = BDMoneyFormatter(1234567, currencySymbol: 'USD');
+
+print(formatter.result.amountWithCurrency);
+// "USD 12,34,567"
+```
+
+## Real-World Example: Product Price Display
+
+Here is a practical Flutter example for displaying prices in BD format:
+
+```dart
+class PriceTag extends StatelessWidget {
+  final double price;
+  final double? originalPrice;
+
+  const PriceTag({required this.price, this.originalPrice});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          price.toBDMoneyWithCurrency(),
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.green[700],
+          ),
+        ),
+        if (originalPrice != null) ...[
+          SizedBox(width: 8),
+          Text(
+            originalPrice!.toBDMoneyWithCurrency(),
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+              decoration: TextDecoration.lineThrough,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+// Usage
+PriceTag(price: 125000, originalPrice: 150000)
+// Displays: ৳ 1,25,000  ৳ 1,50,000 (strikethrough)
+```
+
+## Example: Transaction Summary
+
+```dart
+class TransactionSummary extends StatelessWidget {
+  final List<double> amounts;
+
+  const TransactionSummary({required this.amounts});
+
+  @override
+  Widget build(BuildContext context) {
+    final total = amounts.reduce((a, b) => a + b);
+
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            ...amounts.map((amount) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Item'),
+                  Text(amount.toBDMoneyWithCurrency()),
+                ],
+              ),
+            )),
+            Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Total', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  total.toBDMoneyWithCurrency(),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+## API Reference
+
+### Extension Methods on `num`
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `toBDMoney()` | Format in BD style | `1234567.toBDMoney()` → `"12,34,567"` |
+| `toBDMoneyWithCurrency()` | Format with ৳ symbol | `1234567.toBDMoneyWithCurrency()` → `"৳ 12,34,567"` |
+
+### BDMoneyFormatter Class
+
+| Property | Description |
+|----------|-------------|
+| `result.amount` | Formatted number string |
+| `result.amountWithCurrency` | Formatted with currency symbol |
+| `result.originalValue` | Original input value |
+
+## Summary
+
+The **bd_money_formatter** package is a must-have for any Flutter or Dart application dealing with Bangladeshi currency. The extension methods make it incredibly easy to format prices, transaction amounts, and financial data in the correct BD format with just one method call.
+
+Get it on [pub.dev](https://pub.dev/packages/bd_money_formatter) or view the source on [GitHub](https://github.com/Pritom-Chaki/bd_money_formatter).

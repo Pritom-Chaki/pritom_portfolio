@@ -8,31 +8,32 @@ export interface FlutterPackage {
 }
 
 export const flutterPackages: FlutterPackage[] = [
+
   {
-    name: "bottom_bar_matu",
+    name: "bangla_converter",
     description:
-      "A beautiful and animated bottom navigation bar for Flutter with multiple styles and customization options.",
-    pubDevLink: "https://pub.dev/packages/bottom_bar_matu",
-    githubLink: "https://github.com/Pritom-Chaki/bottom_bar_matu",
-    downloads: "5K+",
+      "A Flutter package enabling seamless conversion between Bangla and English numerals, plus date translation capabilities for localization.",
+    pubDevLink: "https://pub.dev/packages/bangla_converter",
+    githubLink: "https://github.com/Pritom-Chaki/bangla_converter",
+    downloads: "141+",
     version: "2.0.0",
   },
   {
-    name: "flutter_animated_dialog",
+    name: "bangla_number_to_words",
     description:
-      "Easily create animated dialogs in Flutter with multiple animation types and customizable styles.",
-    pubDevLink: "https://pub.dev/packages/flutter_animated_dialog",
-    githubLink: "https://github.com/Pritom-Chaki/flutter_animated_dialog",
-    downloads: "10K+",
-    version: "2.0.1",
+      "Converts numerical values and monetary amounts into Bangladeshi text using the local numbering system with multi-currency support.",
+    pubDevLink: "https://pub.dev/packages/bangla_number_to_words",
+    githubLink: "https://github.com/Pritom-Chaki/bangla_number_to_words",
+    downloads: "103+",
+    version: "1.0.0",
   },
   {
-    name: "flutter_intro_slider",
+    name: "bd_money_formatter",
     description:
-      "A Flutter plugin for creating beautiful intro slider screens with customizable tabs and skip functionality.",
-    pubDevLink: "https://pub.dev/packages/flutter_intro_slider",
-    githubLink: "https://github.com/Pritom-Chaki/flutter_intro_slider",
-    downloads: "3K+",
-    version: "1.0.0",
+      "Formats numerical values according to Bangladesh's distinctive monetary grouping system with customizable currency symbols.",
+    pubDevLink: "https://pub.dev/packages/bd_money_formatter",
+    githubLink: "https://github.com/Pritom-Chaki/bd_money_formatter",
+    downloads: "128+",
+    version: "2.0.0",
   },
 ];

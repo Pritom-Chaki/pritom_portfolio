@@ -1,67 +1,108 @@
+export interface ProjectLink {
+  label: string;
+  url: string;
+}
+
 export interface Project {
   title: string;
   description: string;
+  role: string;
   techStack: string[];
-  githubLink?: string;
-  demoLink?: string;
+  links: ProjectLink[];
   image: string;
   featured: boolean;
 }
 
 export const projects: Project[] = [
   {
-    title: "EasyLauncher",
+    title: "Dilnia Insurance",
     description:
-      "A minimal and clean Android launcher app built with Kotlin. Focuses on simplicity and fast access to apps without distractions.",
-    techStack: ["Kotlin", "Android", "Material Design"],
-    githubLink: "https://github.com/Pritom-Chaki/EasyLauncher",
-    image: "/projects/easylauncher.png",
+      "Insurance platform offering motor, medical, travel, and business insurance services. Built a secure Flutter application with REST API integration. Supported scalable backend architecture and server deployment.",
+    role: "Flutter App & Backend Developer",
+    techStack: ["Flutter", "Dart", "REST API", "Backend"],
+    links: [
+      { label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.dilnia.mobile.insurance" },
+      { label: "App Store", url: "https://apps.apple.com/in/app/dilnia/id6746866042" },
+    ],
+    image: "/projects/dilnia.png",
     featured: true,
   },
   {
-    title: "Flutter Weather App",
+    title: "PixPos",
     description:
-      "A beautiful weather application built with Flutter featuring real-time weather data, location-based forecasts, and clean UI.",
-    techStack: ["Flutter", "Dart", "REST API", "Provider"],
-    githubLink: "https://github.com/Pritom-Chaki/flutter-weather",
-    image: "/projects/weather-app.png",
+      "POS mobile application for retail and SME businesses. Implemented transaction flows, reporting features, and UI optimization. Improved performance and stability for daily business operations.",
+    role: "Flutter Application Developer",
+    techStack: ["Flutter", "Dart", "REST API", "POS"],
+    links: [
+      { label: "Website", url: "https://pixposbd.com" },
+      { label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.pixposbd.tech" },
+    ],
+    image: "/projects/pixpos.png",
     featured: true,
   },
   {
-    title: "Portfolio Website",
+    title: "Tuition App",
     description:
-      "Personal portfolio website built with Next.js, TypeScript, and Tailwind CSS. Fully SEO optimized with static generation.",
-    techStack: ["Next.js", "TypeScript", "Tailwind CSS"],
-    githubLink: "https://github.com/Pritom-Chaki/portfolio",
-    demoLink: "https://www.pritom.me",
-    image: "/projects/portfolio.png",
+      "Flutter-based mobile and desktop application for educational management and tutoring services. Implemented student management, fee tracking, automated dues reminders, and teacher dashboards. Achieved 1,000+ downloads with a 4.3 user rating.",
+    role: "Flutter App & Backend Developer",
+    techStack: ["Flutter", "Dart", "REST API", "Desktop", "Backend"],
+    links: [
+      { label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.tuitionapps.android" },
+      { label: "Desktop App", url: "https://apps.microsoft.com/detail/9NNVKTSCXF70" },
+    ],
+    image: "/projects/tuition-app.png",
     featured: true,
   },
   {
-    title: "Task Manager",
+    title: "Nearest Laundry",
     description:
-      "A full-featured task management application with categories, priorities, and deadline tracking. Built with Flutter and Firebase.",
-    techStack: ["Flutter", "Firebase", "Dart"],
-    githubLink: "https://github.com/Pritom-Chaki/task-manager",
-    image: "/projects/task-manager.png",
+      "On-demand laundry service platform operating in London, UK. Delivered full-stack mobile and backend solution. Optimized app performance and managed server deployment.",
+    role: "Flutter App & Backend Developer",
+    techStack: ["Flutter", "Dart", "REST API", "Backend"],
+    links: [
+      { label: "Website", url: "https://nearestlaundry.com" },
+      { label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.nearestlaundry.android" },
+    ],
+    image: "/projects/nearest-laundry.png",
     featured: false,
   },
   {
-    title: "Chat Application",
+    title: "Go Ease",
     description:
-      "Real-time chat application with group messaging, media sharing, and push notifications using Firebase.",
-    techStack: ["Flutter", "Firebase", "Cloud Functions"],
-    githubLink: "https://github.com/Pritom-Chaki/chat-app",
-    image: "/projects/chat-app.png",
+      "Eco-friendly city mobility platform enabling QR-based vehicle unlocking. Developed Flutter mobile application and backend APIs. Implemented real-time features and optimized application performance.",
+    role: "Flutter App & Backend Developer",
+    techStack: ["Flutter", "Dart", "REST API", "Real-time", "Backend"],
+    links: [
+      { label: "Website", url: "https://goease.co.in" },
+      { label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.goease.go_ease" },
+    ],
+    image: "/projects/go-ease.png",
     featured: false,
   },
   {
-    title: "E-Commerce App",
+    title: "Sokker Pro",
     description:
-      "A complete e-commerce mobile application with product browsing, cart management, and payment integration.",
-    techStack: ["Flutter", "Node.js", "MongoDB", "Stripe"],
-    githubLink: "https://github.com/Pritom-Chaki/ecommerce-app",
-    image: "/projects/ecommerce.png",
+      "Sports analytics platform providing live scores, statistics, and betting insights. Contributed to Flutter development and UI optimization. Participated in Play Store and App Store release processes.",
+    role: "Flutter App Developer (Team Member)",
+    techStack: ["Flutter", "Dart", "Analytics", "REST API"],
+    links: [
+      { label: "Website", url: "http://sokkerpro.com" },
+      { label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.sokkerpro.android" },
+      { label: "App Store", url: "https://apps.apple.com/us/app/sokkerpro/id1483061919" },
+    ],
+    image: "/projects/sokker-pro.png",
+    featured: false,
+  },
+  {
+    title: "Quink App",
+    description:
+      "Social media platform focusing on creative content and user engagement. Worked on feature development, UI improvements, and performance fixes.",
+    role: "Flutter App Developer (Team Member)",
+    techStack: ["Flutter", "Dart", "Social Media"],
+    links: [
+      { label: "App Store", url: "https://apps.apple.com/in/app/quink-app/id6738854866" },
+    ],
+    image: "/projects/quink.png",
     featured: false,
   },
 ];
