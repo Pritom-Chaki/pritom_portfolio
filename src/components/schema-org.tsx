@@ -18,7 +18,9 @@ export function SchemaOrg() {
       siteConfig.links.linkedin,
       siteConfig.links.twitter,
     ],
-    image: `${siteConfig.url}${siteConfig.author.avatar}`,
+    image: siteConfig.author.avatar.startsWith("http")
+      ? siteConfig.author.avatar
+      : `${siteConfig.url}${siteConfig.author.avatar}`,
   };
 
   return (

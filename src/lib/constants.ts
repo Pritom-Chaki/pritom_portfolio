@@ -4,7 +4,7 @@ export const siteConfig = {
   description:
     "Pritom Chaki is a Flutter Developer, Laravel Developer, and App Developer from Bangladesh. Building elegant, performant mobile and web applications.",
   url: "https://www.pritom.me",
-  ogImage: "/og-image.png",
+  ogImage: "/opengraph-image",
   links: {
     github: "https://github.com/Pritom-Chaki",
     linkedin: "https://www.linkedin.com/in/pritom-chaki-cse",
