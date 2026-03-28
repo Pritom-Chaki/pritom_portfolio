@@ -36,4 +36,13 @@ export const flutterPackages: FlutterPackage[] = [
     downloads: "128+",
     version: "2.0.0",
   },
+  {
+    name: "bangladesh_geo_postcode",
+    description:
+      "Offline Bangladesh geographic postcode lookup with Division, District, Thana and Postcode search supporting both Bangla and English via Protocol Buffers.",
+    pubDevLink: "https://pub.dev/packages/bangladesh_geo_postcode",
+    githubLink: "https://github.com/Pritom-Chaki/bangladesh_geo_postcode",
+    downloads: "New",
+    version: "0.0.2",
+  },
 ];

@@ -1,0 +1,155 @@
+---
+title: "bangladesh_geo_postcode: Offline Bangladesh Postcode Lookup in Flutter"
+slug: "bangladesh-geo-postcode-flutter-package-guide"
+description: "Learn how to use the bangladesh_geo_postcode Flutter package for offline geographic postcode lookup with Division, District, Thana and Postcode search in both Bangla and English."
+date: "2026-03-28"
+tags: ["Flutter", "Dart", "Bangladesh", "Localization", "Open Source"]
+image: "/blog/bangladesh-geo-postcode.png"
+---
+
+Need to look up Bangladesh postcodes, divisions, districts, or thanas in your Flutter app — without any network calls? The **bangladesh_geo_postcode** package provides a fully offline, blazing-fast geographic postcode lookup powered by Protocol Buffers.
+
+## Why bangladesh_geo_postcode?
+
+Many Bangladeshi apps need location-based features like address forms, delivery zone selection, or postcode validation. Relying on a remote API adds latency, requires connectivity, and introduces a point of failure. This package bundles the entire Bangladesh geographic hierarchy locally using protobuf for efficient binary loading, so lookups are instant and work completely offline.
+
+## Key Features
+
+- Hierarchical location navigation: Division → District → Thana → Postcode
+- Dual-language support (Bangla and English)
+- O(1) postcode search — accepts both English digits (`1206`) and Bangla numerals (`১২০৬`)
+- In-memory caching with a single protobuf load
+- Fully offline — no network, database, or external dependencies
+
+## Installation
+
+Add the package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  bangladesh_geo_postcode: ^0.0.2
+```
+
+Then run:
+
+```bash
+flutter pub get
+```
+
+## Getting Started
+
+Initialize the location cache once at app startup:
+
+```dart
+import 'package:bangladesh_geo_postcode/bangladesh_geo_postcode.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocationCache.instance.load();
+  runApp(MyApp());
+}
+```
+
+## Querying Divisions
+
+Retrieve all divisions of Bangladesh:
+
+```dart
+final service = LocationService();
+
+// Get all divisions
+List<Division> divisions = service.getDivisions();
+
+for (var division in divisions) {
+  print('${division.name} (${division.nameBn})');
+}
+// Output: Dhaka (ঢাকা), Chattogram (চট্টগ্রাম), ...
+```
+
+## Querying Districts and Thanas
+
+Navigate the hierarchy by passing the parent division or district:
+
+```dart
+// Get districts under a division
+List<District> districts = service.getDistricts(divisionId: 'dhaka');
+
+// Get thanas under a district
+List<Thana> thanas = service.getThanas(districtId: 'dhaka');
+```
+
+## Postcode Lookup
+
+Search for a postcode to get its full location details:
+
+```dart
+// Search with English digits
+var result = service.searchPostcode('1206');
+
+// Or with Bangla numerals
+var result = service.searchPostcode('১২০৬');
+
+if (result != null) {
+  print('Division: ${result.division}');
+  print('District: ${result.district}');
+  print('Thana: ${result.thana}');
+  print('Postcode: ${result.postcode}');
+}
+```
+
+## Real-World Use Case
+
+Here is a practical example of a postcode search widget:
+
+```dart
+class PostcodeLookupWidget extends StatefulWidget {
+  @override
+  State<PostcodeLookupWidget> createState() => _PostcodeLookupWidgetState();
+}
+
+class _PostcodeLookupWidgetState extends State<PostcodeLookupWidget> {
+  final _controller = TextEditingController();
+  final _service = LocationService();
+  String _result = '';
+
+  void _search() {
+    final location = _service.searchPostcode(_controller.text);
+    setState(() {
+      _result = location != null
+          ? '${location.thana}, ${location.district}, ${location.division}'
+          : 'Postcode not found';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          controller: _controller,
+          decoration: InputDecoration(
+            labelText: 'Enter Postcode',
+            suffixIcon: IconButton(
+              icon: Icon(Icons.search),
+              onPressed: _search,
+            ),
+          ),
+          keyboardType: TextInputType.number,
+        ),
+        SizedBox(height: 16),
+        Text(_result, style: TextStyle(fontSize: 16)),
+      ],
+    );
+  }
+}
+```
+
+## Platform Support
+
+The package works across all Flutter platforms: Android, iOS, Linux, macOS, Web, and Windows.
+
+## Summary
+
+The **bangladesh_geo_postcode** package gives you instant, offline access to Bangladesh's complete geographic postcode database with bilingual support. Whether you are building a delivery app, an address form, or any location-aware feature for Bangladeshi users, this package eliminates the need for network calls and external dependencies.
+
+Check it out on [pub.dev](https://pub.dev/packages/bangladesh_geo_postcode) or explore the source on [GitHub](https://github.com/Pritom-Chaki/bangladesh_geo_postcode).
