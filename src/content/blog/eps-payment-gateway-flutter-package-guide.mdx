@@ -1,0 +1,149 @@
+---
+title: "eps_payment_gateway: Integrate EPS Payments in Flutter Apps"
+slug: "eps-payment-gateway-flutter-package-guide"
+description: "Learn how to use the eps_payment_gateway Flutter package to integrate the EPS (Easy Payment System) payment gateway with Direct and Server modes, supporting cards, bKash, Nagad, and Rocket."
+date: "2026-07-03"
+tags: ["Flutter", "Payment Gateway", "Bangladesh", "Fintech", "Open Source"]
+image: "/blog/eps-payment-gateway.png"
+---
+
+Adding a local payment gateway to a Flutter app usually means juggling HMAC signing, JWT tokens, and CORS restrictions on web — all before a single payment goes through. The **eps_payment_gateway** package wraps the EPS (Easy Payment System) gateway into a clean Flutter API, handling authentication and request signing for you so you can focus on the checkout flow.
+
+## Why eps_payment_gateway?
+
+EPS supports a wide range of payment methods popular in Bangladesh — cards, bKash, Nagad, Rocket, and more — but integrating it directly means implementing HMAC-SHA512 request signing, JWT auth, and environment switching by hand. This package does that work for you and gives you two integration paths depending on how much you want your backend involved.
+
+## Key Features
+
+- Two integration modes: **Direct Mode** (Flutter calls EPS APIs directly) and **Server Mode** (Flutter calls your backend, which proxies to EPS)
+- Full-screen and modal bottom sheet display options for the checkout UI
+- Automatic HMAC-SHA512 request signing and JWT authentication
+- Easy sandbox and live environment toggling
+- Support for Visa, Mastercard, American Express, bKash, Nagad, Rocket, and other local payment methods
+- Built-in web CORS workaround via backend proxy
+
+## Installation
+
+Add the package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  eps_payment_gateway: ^1.0.1
+```
+
+Then run:
+
+```bash
+flutter pub get
+```
+
+## Direct Mode: Flutter Calls EPS Directly
+
+Best for mobile apps where you can safely store the merchant credentials on-device:
+
+```dart
+import 'package:eps_payment_gateway/eps_payment_gateway.dart';
+
+final eps = EpsPaymentGateway(
+  merchantId: 'YOUR_MERCHANT_ID',
+  merchantSecret: 'YOUR_MERCHANT_SECRET',
+  environment: EpsEnvironment.sandbox,
+);
+
+final result = await eps.pay(
+  context: context,
+  amount: 1500.00,
+  invoiceId: 'INV-2026-0001',
+  customerName: 'Rahim Uddin',
+  customerEmail: 'rahim@example.com',
+  displayMode: EpsDisplayMode.bottomSheet,
+);
+
+if (result.isSuccess) {
+  print('Payment successful: ${result.transactionId}');
+} else {
+  print('Payment failed: ${result.message}');
+}
+```
+
+## Server Mode: Backend Proxies the Request
+
+Recommended for production and required on Flutter Web to avoid CORS issues — your backend signs and forwards requests to EPS:
+
+```dart
+final eps = EpsPaymentGateway.server(
+  backendBaseUrl: 'https://api.yourapp.com/eps',
+  environment: EpsEnvironment.live,
+);
+
+final result = await eps.pay(
+  context: context,
+  amount: 1500.00,
+  invoiceId: 'INV-2026-0001',
+  customerName: 'Rahim Uddin',
+  customerEmail: 'rahim@example.com',
+  displayMode: EpsDisplayMode.fullScreen,
+);
+```
+
+Your backend simply needs to accept the request, sign it with your merchant secret using HMAC-SHA512, forward it to EPS, and relay the response back.
+
+## Real-World Use Case: Checkout Button
+
+```dart
+class CheckoutButton extends StatelessWidget {
+  final double total;
+  final String invoiceId;
+
+  const CheckoutButton({required this.total, required this.invoiceId});
+
+  Future<void> _handlePayment(BuildContext context) async {
+    final eps = EpsPaymentGateway.server(
+      backendBaseUrl: 'https://api.yourapp.com/eps',
+      environment: EpsEnvironment.live,
+    );
+
+    final result = await eps.pay(
+      context: context,
+      amount: total,
+      invoiceId: invoiceId,
+      customerName: 'Guest Customer',
+      customerEmail: 'guest@example.com',
+      displayMode: EpsDisplayMode.bottomSheet,
+    );
+
+    if (result.isSuccess) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Payment completed!')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => _handlePayment(context),
+      child: Text('Pay ৳${total.toStringAsFixed(2)}'),
+    );
+  }
+}
+```
+
+## Choosing Between Direct and Server Mode
+
+| | Direct Mode | Server Mode |
+|---|---|---|
+| Setup effort | Lower | Requires backend endpoint |
+| Merchant secret exposure | On-device | Kept server-side |
+| Works on Flutter Web | Limited by CORS | Yes |
+| Recommended for | Prototypes, mobile-only apps | Production apps |
+
+## Platform Support
+
+The package supports Android, iOS, macOS, and Flutter Web (Server Mode recommended for Web to avoid CORS restrictions).
+
+## Summary
+
+The **eps_payment_gateway** package removes the boilerplate of HMAC signing, JWT auth, and environment management from integrating the EPS payment gateway in Flutter. Whether you need a quick Direct Mode integration for a mobile prototype or a secure Server Mode setup for production, this package gets your checkout flow running with support for cards, bKash, Nagad, and Rocket out of the box.
+
+Get it on [pub.dev](https://pub.dev/packages/eps_payment_gateway) or view the source on [GitHub](https://github.com/Pritom-Chaki/eps_payment_gateway).

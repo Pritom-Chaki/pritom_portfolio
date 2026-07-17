@@ -1,0 +1,119 @@
+---
+title: "thermal_unicode_print: Print Bangla, Arabic & Unicode Text on Thermal Printers in Flutter"
+slug: "thermal-unicode-print-flutter-package-guide"
+description: "Learn how to use the thermal_unicode_print Flutter package to print Bangla, Arabic, Devanagari, and other Unicode scripts on ESC/POS thermal printers with memory-efficient line-by-line rendering."
+date: "2026-07-11"
+tags: ["Flutter", "Dart", "Bangla", "Printing", "Open Source"]
+image: "/blog/thermal-unicode-print.png"
+---
+
+Most ESC/POS thermal printers only understand a limited set of built-in character sets, which makes printing Bangla, Arabic, Devanagari, or other Unicode scripts a real headache. The common workaround — screenshotting an entire widget tree and printing it as one giant image — burns memory fast and gets worse as receipts grow longer. The **thermal_unicode_print** package solves this by rendering Unicode text one bounded line or row at a time, so output size never grows with receipt length.
+
+## Why thermal_unicode_print?
+
+Thermal printers used in POS systems across Bangladesh, the Middle East, and South Asia rarely ship with proper Unicode fonts. Rendering a full receipt as a single bitmap works for short receipts, but memory usage balloons on longer ones. This package renders each line or row independently as a small, bounded bitmap and streams it straight into an `esc_pos_utils_plus` `Generator`, keeping memory usage flat regardless of receipt length.
+
+## Key Features
+
+- Prints any Unicode script — Bangla, Arabic, Devanagari, and more — on ESC/POS compatible printers
+- Memory-efficient line-by-line rendering instead of whole-receipt screenshots
+- Tabular rows with flexible, configurable column widths
+- PNG preview variants so you can develop and test without physical hardware
+- Integrates directly with the `esc_pos_utils_plus` `Generator` API
+
+## Installation
+
+Add the package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  thermal_unicode_print: ^0.0.1
+  esc_pos_utils_plus: ^2.0.4
+```
+
+Then run:
+
+```bash
+flutter pub get
+```
+
+## Getting Started
+
+Render a single line of Unicode text and feed it into your ESC/POS generator:
+
+```dart
+import 'package:thermal_unicode_print/thermal_unicode_print.dart';
+import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
+
+Future<void> printReceiptHeader(Generator generator) async {
+  final line = await UnicodeLinePrinter.renderLine(
+    text: 'পণ্যের তালিকা',
+    fontSize: 28,
+  );
+
+  generator.imageRaster(line);
+}
+```
+
+## Printing Tabular Rows
+
+Receipts often need aligned columns for item name, quantity, and price. Use `renderRow` with fixed column widths:
+
+```dart
+final row = await UnicodeLinePrinter.renderRow(
+  columns: ['চাল (৫ কেজি)', '২', '৳ ৪০০'],
+  columnWidths: [0.5, 0.2, 0.3],
+  fontSize: 24,
+);
+
+generator.imageRaster(row);
+```
+
+## Real-World Use Case
+
+Here is a practical example printing a full itemized receipt:
+
+```dart
+Future<List<int>> buildReceipt(List<Map<String, String>> items) async {
+  final profile = await CapabilityProfile.load();
+  final generator = Generator(PaperSize.mm80, profile);
+  List<int> bytes = [];
+
+  bytes += generator.text('দোকানের নাম', styles: PosStyles(align: PosAlign.center));
+
+  for (final item in items) {
+    final row = await UnicodeLinePrinter.renderRow(
+      columns: [item['name']!, item['qty']!, item['price']!],
+      columnWidths: [0.5, 0.2, 0.3],
+      fontSize: 22,
+    );
+    bytes += generator.imageRaster(row);
+  }
+
+  bytes += generator.cut();
+  return bytes;
+}
+```
+
+## Previewing Without Hardware
+
+During development, render lines to PNG bytes to preview them on screen instead of sending them to a printer:
+
+```dart
+final previewBytes = await UnicodeLinePrinter.renderLinePreview(
+  text: 'রসিদ প্রিভিউ',
+  fontSize: 28,
+);
+
+Image.memory(previewBytes);
+```
+
+## Platform Support
+
+The package works across all Flutter platforms: Android, iOS, Linux, macOS, Web, and Windows.
+
+## Summary
+
+The **thermal_unicode_print** package makes it possible to print Bangla, Arabic, Devanagari, and other Unicode scripts on standard ESC/POS thermal printers without memory blowing up as receipts get longer. If you are building POS software for markets where the built-in printer character sets fall short, this package is a drop-in solution alongside `esc_pos_utils_plus`.
+
+Check it out on [pub.dev](https://pub.dev/packages/thermal_unicode_print) or explore the source on [GitHub](https://github.com/Pritom-Chaki/thermal_unicode_print).

@@ -45,4 +45,22 @@ export const flutterPackages: FlutterPackage[] = [
     downloads: "New",
     version: "0.0.2",
   },
+  {
+    name: "eps_payment_gateway",
+    description:
+      "Integrates the EPS (Easy Payment System) payment gateway into Flutter apps with Direct and Server modes, HMAC-SHA512 request signing, and support for cards, bKash, Nagad, and Rocket.",
+    pubDevLink: "https://pub.dev/packages/eps_payment_gateway",
+    githubLink: "https://github.com/Pritom-Chaki/eps_payment_gateway",
+    downloads: "216+",
+    version: "1.0.1",
+  },
+  {
+    name: "thermal_unicode_print",
+    description:
+      "Prints Unicode scripts like Bangla, Arabic, and Devanagari on ESC/POS thermal printers with efficient line-by-line rendering that keeps output size independent of receipt length.",
+    pubDevLink: "https://pub.dev/packages/thermal_unicode_print",
+    githubLink: "https://github.com/Pritom-Chaki/thermal_unicode_print",
+    downloads: "89+",
+    version: "0.0.1",
+  },
 ];
